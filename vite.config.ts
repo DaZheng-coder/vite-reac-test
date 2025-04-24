@@ -14,6 +14,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
       '@mock': resolve(__dirname, 'src/mock'),
+      '@assets': resolve(__dirname, 'src/assets'),
     }
   },
   css: {

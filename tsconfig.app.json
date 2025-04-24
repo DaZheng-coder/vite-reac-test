@@ -25,7 +25,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@mock/*": ["src/mock/*"]
+      "@mock/*": ["src/mock/*"],
+      "@assets/*": ["src/assets/*"]
     }
   },
   "include": ["src"]
