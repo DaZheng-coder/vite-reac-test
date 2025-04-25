@@ -2,7 +2,7 @@ import Create from "./pages/Create";
 import Home from "./pages/Home";
 import Support from "./pages/Support";
 import Tools from "./pages/Tools";
-import Trade from "./pages/Trade";
+import Trade, { TradeDetail, TradeList } from "./pages/Trade";
 
 export const routeConfig = [
   {
@@ -19,6 +19,14 @@ export const routeConfig = [
     path: "/trade",
     label: "建材贸易",
     element: <Trade />,
+    children: [
+      { path: "", label: "建材贸易", element: <TradeList /> },
+      {
+        path: "detail",
+        label: "详情",
+        element: <TradeDetail />,
+      },
+    ],
   },
   {
     path: "/tools",

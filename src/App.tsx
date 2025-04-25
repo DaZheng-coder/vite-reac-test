@@ -9,7 +9,17 @@ function App() {
       <Nav />
       <Routes>
         {routeConfig.map((route) => (
-          <Route path={route.path} element={route.element} />
+          <Route path={route.path} element={route.element}>
+            {route.children &&
+              route.children.map((subRoute) => (
+                <Route
+                  key={subRoute.path}
+                  index={subRoute.path === ""}
+                  path={subRoute.path}
+                  element={subRoute.element}
+                />
+              ))}
+          </Route>
         ))}
       </Routes>
       <Footer />
