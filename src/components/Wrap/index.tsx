@@ -4,18 +4,22 @@ import SubTitle from "../SubTitle";
 const Wrap = (props: {
   subtitle: string;
   children: ReactNode;
-  bg: ReactNode;
+  bg?: ReactNode;
+  style?: React.CSSProperties;
 }) => {
-  const { subtitle, children, bg } = props;
+  const { subtitle, children, bg, style = {} } = props;
   return (
     <div
       style={{
-        background: `url(${bg}) center no-repeat`,
+        background: bg ? `url(${bg}) center no-repeat` : "transparent",
+        ...style,
       }}
-      className="w-full flex justify-center"
+      className="justify-center flex-1"
     >
-      <div className="flex flex-col">
-        <SubTitle style={{ marginTop: "36px" }} title={subtitle} />
+      <div>
+        <div className="flex justify-center">
+          <SubTitle style={{ marginTop: "36px" }} title={subtitle} />
+        </div>
         {children}
       </div>
     </div>

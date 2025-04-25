@@ -88,7 +88,7 @@ const ContactUs = () => {
       style={{ background: `url(${ContactUsBg}) no-repeat center` }}
       className="w-full flex flex-col  items-center"
     >
-      <Title title="联系我们" color="white" />
+      <Title title="联系我们" subtitle="ORIENTATION" color="white" />
       <div className="flex mt-[30px]">
         <div className="pr-[97px]">
           {renderSubTitle("联系方式")}

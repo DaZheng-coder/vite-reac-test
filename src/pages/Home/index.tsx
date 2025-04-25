@@ -14,7 +14,7 @@ const Home = () => {
       <Header />
       <div className="flex justify-center items-center flex-col">
         <News />
-        <Title title="关于我们" />
+        <Title title="关于我们"  subtitle="ORIENTATION" />
         <Vision />
         <Organization />
         <Staff />

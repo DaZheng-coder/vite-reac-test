@@ -58,7 +58,7 @@ const News = () => {
 
   return (
     <>
-      <Title title="新闻与动态" />
+      <Title title="新闻与动态" subtitle="ORIENTATION" />
       <div className="w-full flex justify-center">
         <Tabs
           key={selectKey}

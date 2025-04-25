@@ -7,7 +7,7 @@ const SubTitle = ({
   style = {},
 }: {
   title: string;
-  style: CSSProperties;
+  style?: CSSProperties;
 }) => {
   return (
     <div style={style} className="flex gap-[6px] items-center">

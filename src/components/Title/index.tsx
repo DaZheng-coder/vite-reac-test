@@ -1,8 +1,10 @@
 const Title = ({
   title,
+  subtitle,
   color = "#1F2329",
 }: {
   title: string;
+  subtitle: string;
   color?: string;
 }) => {
   return (
@@ -29,7 +31,7 @@ const Title = ({
         }}
         className="text-nowrap font-bold text-[38px] text-[#F6F6F7] leading-[55px] tracking-[4px] text-left normal-case"
       >
-        ORIENTATION
+        {subtitle}
       </span>
     </div>
   );
