@@ -10,7 +10,7 @@ import {
 import BackArrow from "@assets/backArrow.png";
 import { Breadcrumb } from "antd";
 import { useMemo } from "react";
-import { routeConfig } from "@/route";
+import useRouteStore from "@/store/useRouteStore";
 
 // 生成TradeCard的mock数据列表
 const data = [
@@ -37,7 +37,6 @@ const data = [
 const Trade = () => {
   return (
     <div className="mt-[64px]">
-      <Header />
       <Outlet />
     </div>
   );
@@ -54,7 +53,8 @@ export default Trade;
 export const TradeDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location.pathname);
+
+  const routeConfig = useRouteStore((state) => state.routeConfig);
 
   const breadcrumbPaths = useMemo(() => {
     const paths = location.pathname.split("/").filter((path) => path);
@@ -64,7 +64,6 @@ export const TradeDetail = () => {
       const target = source.find(
         (item) => item.path.replace("/", "") === paths[i].replace("/", "")
       );
-      console.log("target", target);
       if (target) {
         res.push({
           title: target.label,
@@ -180,7 +179,6 @@ export const TradeList = () => {
               {...item}
               onClick={() => {
                 // *** todo 补充id
-                console.log("*** lick");
                 navigate("/trade/detail");
               }}
             />

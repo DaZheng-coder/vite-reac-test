@@ -5,9 +5,13 @@ import Zuzhijiagou from "@assets/zuzhijiagou.png";
 
 const Organization = () => {
   return (
-    <Wrap subtitle="组织架构" bg={ZuzhijiagouBg}>
-      <div className="mt-[36px] mb-[79px]">
-        <img className="w-[1266px] h-[544px]" src={Zuzhijiagou} alt="" />
+    <Wrap
+      subtitle="组织架构"
+      bg={ZuzhijiagouBg}
+      style={{ paddingLeft: "13.5%", paddingRight: "13.5%" }}
+    >
+      <div className="pt-[36px] pb-[79px]">
+        <img src={Zuzhijiagou} alt="" />
       </div>
     </Wrap>
   );

@@ -1,35 +1,34 @@
 import { Button, Tabs, TabsProps } from "antd";
 import Search from "antd/es/transfer/search";
-import React, { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import InfoCard from "./InfoCard";
 import Title from "@/components/Title";
+import { NewsArticle, NewsCategory } from "@/types";
+import request from "@/api/request";
 
 const News = () => {
-  const renderChildren = () => {
-    const mockChildren = [{ id: 1 }, { id: 2 }, { id: 3 }];
-    return (
-      <div className="flex gap-[25px] my-[36px]">
-        {mockChildren.map((item) => (
-          <InfoCard
-            img={""}
-            key={item.id}
-            title="正睿前沿培训丨《咨询师第一期AI应用与实践..."
-            desc="为了让全体员工能够紧跟时代步伐，掌握AI技能，提升公司整体竞争力。2025年2月22日，正睿咨询集团特别和行业AI资深专家深度合作，成功举办了《咨询师第一期AI应用......"
-            time="2025年02月24日18:31"
-          />
-        ))}
-      </div>
-    );
+  const [cate, setCate] = useState<NewsCategory[]>([]);
+  const [selectKey, setSelectKey] = useState<string>("");
+  const getCate = async () => {
+    const res = await request.get("api/news/category/enabled");
+    console.log("*** res", res.data);
+    setCate(res.data?.data);
+    setSelectKey(String(res.data?.data[0]?.id));
   };
 
-  const items: TabsProps["items"] = [
-    { key: "1", label: "企业动态", children: renderChildren() },
-    { key: "2", label: "AI 应用", children: "Content of Tab Pane 2" },
-    { key: "3", label: "项目动态", children: "Content of Tab Pane 3" },
-    { key: "4", label: "热门资讯", children: "Content of Tab Pane 3" },
-  ];
+  useEffect(() => {
+    getCate();
+  }, []);
 
-  const [selectKey, setSelectKey] = useState<string>(items[0].key);
+  const items: TabsProps["items"] = useMemo(() => {
+    return (cate || []).map((item) => {
+      return {
+        key: String(item.id),
+        label: item.name,
+        children: <NewCard id={String(item.id)} />,
+      };
+    });
+  }, [cate]);
 
   const renderTabBar = () => {
     return (
@@ -57,9 +56,15 @@ const News = () => {
   };
 
   return (
-    <>
-      <Title title="新闻与动态" subtitle="ORIENTATION" />
-      <div className="w-full flex justify-center">
+    <div className="px-[13.5%]">
+      <div className="flex justify-center">
+        <Title
+          className="my-[46px]"
+          title="新闻与动态"
+          subtitle="ORIENTATION"
+        />
+      </div>
+      <div>
         <Tabs
           key={selectKey}
           items={items}
@@ -69,8 +74,35 @@ const News = () => {
           }}
         />
       </div>
-    </>
+    </div>
   );
 };
 
 export default News;
+
+const NewCard = ({ id }: { id: string }) => {
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const getArt = async (categoryId: string) => {
+    const res = await request.get(`api/news/article/category/${categoryId}`);
+    setArticles(res.data?.data);
+  };
+
+  useEffect(() => {
+    getArt(id);
+  }, [id]);
+
+  return (
+    <div className="flex gap-[25px] my-[36px]">
+      {articles.map((item) => (
+        <InfoCard
+          img={item.coverUrl}
+          key={item.id}
+          title={item.title}
+          desc={item.content}
+          // time="2025年02月24日18:31"
+          time={item.createTime}
+        />
+      ))}
+    </div>
+  );
+};

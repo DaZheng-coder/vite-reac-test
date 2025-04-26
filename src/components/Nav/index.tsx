@@ -1,25 +1,40 @@
 import { Menu, MenuProps } from "antd";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Logo from "@/assets/logo.png";
-import { routeConfig } from "@/route";
 import { useNavigate } from "react-router-dom";
-
-const items = routeConfig.map((item) => {
-  return {
-    key: item.path,
-    label: item.label,
-  };
-});
+import useRouteStore from "@/store/useRouteStore";
 
 const Nav = () => {
-  const [current, setCurrent] = useState<string>("Home");
+  const [current, setCurrent] = useState<string>();
   const navigate = useNavigate();
 
+  const routeConfig = useRouteStore((state) => state.routeConfig);
+
+  const items = useMemo(() => {
+    return (routeConfig || []).map((item) => {
+      return {
+        key: item.path,
+        label: item.label,
+      };
+    });
+  }, [routeConfig]);
+
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
     setCurrent(e.key as string);
     navigate(e.key as string);
   };
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    const matchedItem = items.find((item) => item.key === path);
+    if (matchedItem) {
+      setCurrent(matchedItem.key);
+      navigate(matchedItem.key);
+    } else {
+      setCurrent(items[0]?.key);
+      navigate(items[0]?.key);
+    }
+  }, [items, navigate]);
 
   return (
     <div className="fixed w-full top-0 z-50 flex justify-around">

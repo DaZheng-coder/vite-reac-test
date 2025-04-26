@@ -9,6 +9,7 @@ import Position from "@assets/position.png";
 import { Button, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import WxQrCode from "@/components/WxQrCode";
+import request from "@/api/request";
 
 const contactData = [
   {
@@ -34,6 +35,45 @@ const contactData = [
 ];
 
 const ContactUs = () => {
+  const [form] = Form.useForm();
+
+  const submit = async () => {
+    // /message/submit
+    const data = form.getFieldsValue();
+    console.log("**** data", data);
+    const res = await request.post("api/message/submit", data);
+    if (res.code === 200 && res.data.code === 200) {
+      form.resetFields();
+      alert("留言成功");
+    }
+  };
+
+  const renderForm = () => {
+    return (
+      <div
+        style={{ border: "1px solid #5EBCFF" }}
+        className="w-[698px] mt-[30px]  rounded-[4px] p-[48px] bg-[rgba(22,124,248,0.5)]"
+      >
+        <Form form={form} onFinish={submit}>
+          <Form.Item required name="name">
+            <Input type="text" placeholder="请输入姓名" />
+          </Form.Item>
+          <Form.Item required name="company">
+            <Input type="text" placeholder="请输入公司名称" />
+          </Form.Item>
+          <Form.Item required name="messageContent">
+            <TextArea autoSize={{ minRows: 5 }} placeholder="请输入留言内容" />
+          </Form.Item>
+          <Form.Item>
+            <Button htmlType="submit" className="w-[294px]" type="default">
+              提交
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    );
+  };
+
   const renderSubTitle = (title: string) => {
     return (
       <div className="flex gap-[20px] items-center">
@@ -46,7 +86,7 @@ const ContactUs = () => {
 
   const renderContactInfo = () => {
     return (
-      <div className="flex flex-col gap-[18px] mt-[54px] mb-[26px]">
+      <div className="flex flex-col gap-[18px] pt-[54px] pb-[26px]">
         {contactData.map((item, index) => {
           return (
             <div className="flex gap-[4px] items-center" key={index}>
@@ -60,33 +100,13 @@ const ContactUs = () => {
     );
   };
 
-  const renderForm = () => {
-    return (
-      <div className="w-[698px] mt-[30px] border-1 rounded-[4px] border-[#5EBCFF]">
-        <Form>
-          <Form.Item name="name">
-            <Input type="text" placeholder="请输入姓名" />
-          </Form.Item>
-          <Form.Item name="company">
-            <Input type="text" placeholder="请输入公司名称" />
-          </Form.Item>
-          <Form.Item name="company">
-            <TextArea autoSize={{ minRows: 5 }} placeholder="请输入留言内容" />
-          </Form.Item>
-          <Form.Item>
-            <Button className="w-[294px]" type="default">
-              提交
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    );
-  };
-
   return (
     <div
-      style={{ background: `url(${ContactUsBg}) no-repeat center` }}
-      className="w-full flex flex-col  items-center"
+      style={{
+        background: `url(${ContactUsBg}) no-repeat center`,
+        backgroundSize: "cover",
+      }}
+      className="w-full flex flex-col  items-center py-[38px]"
     >
       <Title title="联系我们" subtitle="ORIENTATION" color="white" />
       <div className="flex mt-[30px]">

@@ -48,7 +48,6 @@ const Tools = () => {
 
   return (
     <div className="bg-[#FBFCFE]">
-      <Header />
       <div className="flex pb-[64px]">
         {data.map((item, index) => {
           return (

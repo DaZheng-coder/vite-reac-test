@@ -27,22 +27,22 @@ export default defineConfig({
     //   protocol: 'ws',
     //   host: '127.0.0.2'
     // },
-    // proxy: {
-    //   '/mockApi': {
-    //     target: 'http://mymock.com',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/mockApi/, ''),
-    //     configure: (proxy) => {
-    //       proxy.on('proxyReq', (proxyReq, req) => {
-    //         console.log(`[Proxy] Original URL: ${req.url}`);
-    //         console.log(`[Proxy] Target Path: ${proxyReq.path}`);
-    //         console.log(`[Proxy] Full Target URL: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`);
-    //       });
-    //       proxy.on('proxyRes', (proxyRes, req, res) => {
-    //         // proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    //       })
-    //     }
-    //   }
-    // }
+    proxy: {
+      '/api': {
+        target: 'https://www.jiancailvtan.com/',
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/mockApi/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq, req) => {
+            console.log(`[Proxy] Original URL: ${req.url}`);
+            console.log(`[Proxy] Target Path: ${proxyReq.path}`);
+            console.log(`[Proxy] Full Target URL: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`);
+          });
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            // proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+          })
+        }
+      }
+    }
   }
 })

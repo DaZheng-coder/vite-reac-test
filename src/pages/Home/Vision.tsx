@@ -7,6 +7,9 @@ import Qiyejingshen from "@assets/qiyejingshen.png";
 import AboutBg from "@assets/AboutBg.png";
 import SubTitle from "@/components/SubTitle";
 import Wrap from "@/components/Wrap";
+import { useState } from "react";
+import { CorporateCulture } from "@/types";
+import request from "@/api/request";
 
 const Vision = () => {
   const data = [
@@ -38,8 +41,12 @@ const Vision = () => {
   ];
 
   return (
-    <Wrap subtitle="企业文化" bg={AboutBg}>
-      <div className="mt-[83px] mb-[92px] flex gap-[25px]">
+    <Wrap
+      subtitle="企业文化"
+      bg={AboutBg}
+      style={{ padding: "0 13.5%", backgroundSize: "cover" }}
+    >
+      <div className="pt-[83px] pb-[92px] flex gap-[25px]">
         {data.map((item, index) => {
           return (
             <ItemCard
@@ -72,7 +79,7 @@ const ItemCard = ({
         background: "#FFFFFF",
         boxShadow: "0px 6px 14px 0px rgba(0,0,0,0.05)",
       }}
-      className="w-[260px] flex flex-col items-center"
+      className="flex-1 flex flex-col items-center"
     >
       <img className="w-[90px] h-[90px] mt-[38px]" src={icon} alt="" />
       <div className="text-[24px] font-bold mt-[20px] mb-[28px]">{title}</div>

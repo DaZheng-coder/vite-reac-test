@@ -17,7 +17,7 @@ const Wrap = (props: {
       className="justify-center flex-1"
     >
       <div>
-        <div className="flex justify-center">
+        <div className="flex">
           <SubTitle style={{ marginTop: "36px" }} title={subtitle} />
         </div>
         {children}

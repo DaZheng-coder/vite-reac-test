@@ -12,18 +12,15 @@ import SuccessCasesView from "./SuccessCasesView";
 const Support = () => {
   return (
     <div className="mt-[64px]">
-      <Header />
-      <div>
-        <AIKnowledge />
-        <Classes />
-        <Cases />
-        <Solution />
-        <Process />
-        <SuccessCases />
-        <ProjectDeliver />
-        <Quality />
-        <SuccessCasesView />
-      </div>
+      <AIKnowledge />
+      <Classes />
+      <Cases />
+      <Solution />
+      <Process />
+      <SuccessCases />
+      <ProjectDeliver />
+      <Quality />
+      <SuccessCasesView />
     </div>
   );
 };

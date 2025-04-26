@@ -10,7 +10,7 @@ const InfoCard = ({
   time: string;
 }) => {
   return (
-    <div className="flex flex-col gap-[18px] w-[450px]">
+    <div className="flex flex-col gap-[18px]">
       <img className="w-[450px] h-[280px] rounded-[6px]" src={img} alt="" />
       <div className="font-medium text-xl text-[#333333] leading-[30px] text-left">
         {title}

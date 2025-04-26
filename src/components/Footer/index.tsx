@@ -1,7 +1,7 @@
-import { routeConfig } from "@/route";
 import { Link } from "react-router-dom";
 import WxQrCode from "../WxQrCode";
 import Police from "@assets/police.png";
+import useRouteStore from "@/store/useRouteStore";
 
 const Footer = () => {
   const sectionTitleCls =
@@ -10,6 +10,8 @@ const Footer = () => {
     "font-normal text-[14px] text-white leading-[20px] text-left";
   const footerTextCls =
     "font-normal text-[14px] text-[#AFAFAF] leading-[20px] text-left normal-case";
+
+  const routeConfig = useRouteStore((state) => state.routeConfig);
 
   const renderLinks = () => {
     return (

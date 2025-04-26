@@ -1,20 +1,31 @@
+import request from "@/api/request";
+import { CarouselBanner } from "@/types";
 import { Carousel } from "antd";
+import axios from "axios";
+import { memo, useEffect, useState } from "react";
 
 const Header = () => {
-  const config = ["", "", ""];
+  const [banners, setBanners] = useState<CarouselBanner[]>([]);
+
+  const getPic = async () => {
+    const res = await request.get("api/carousel/list");
+    console.log("*** res res", res);
+    setBanners(res.data?.data);
+  };
+
+  useEffect(() => {
+    getPic();
+  }, []);
+
   return (
     <Carousel autoplay>
-      {config.map((item, index) => (
+      {(banners || []).map((item, index) => (
         <div key={index}>
-          <img
-            src={`https://picsum.photos/800/300?random=${index}`}
-            alt={`Slide ${index}`}
-            className="w-full h-72 object-cover"
-          />
+          <img src={item.imageUrl} className="w-full object-cover" />
         </div>
       ))}
     </Carousel>
   );
 };
 
-export default Header;
+export default memo(Header);
