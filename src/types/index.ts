@@ -369,3 +369,18 @@ export interface AiSuccessCase {
   title?: string;
   updateTime?: string;
 }
+
+/**
+ * com.self.company.entity.SurveyQuestion
+ *
+ * SurveyQuestion
+ */
+export interface SurveyQuestion {
+  createTime?: string;
+  id?: number;
+  optionText?: string;
+  questionText?: string;
+  questionType?: string;
+  sortOrder?: number;
+  updateTime?: string;
+}

@@ -1,8 +1,49 @@
+import request from "@/api/request";
 import Title from "@/components/Title";
-import { Checkbox, Form, Input } from "antd";
+import { SurveyQuestion } from "@/types";
+import { Button, Checkbox, Form, Input } from "antd";
+import { useEffect, useState } from "react";
+
+interface QuestionConfigItem {
+  title: string;
+  type: string;
+  multiple?: boolean;
+  options?: { value: string; label: string }[];
+  showOther?: boolean;
+}
 
 const Question = () => {
   const [form] = Form.useForm();
+
+  const [questionConfig, setQuestionConfig] = useState<QuestionConfigItem[]>(
+    []
+  );
+
+  const getQuestion = async () => {
+    const res = await request.get("api/survey/question/list");
+    if (res.data?.data) {
+      const data = res.data?.data.map((item: SurveyQuestion) => {
+        return {
+          title: item.questionText,
+          type: item.questionType === "text" ? "textarea" : "checkbox",
+          multiple: item.questionType === "multiple",
+          options: JSON.parse(item.optionText || "[]").map((item) => {
+            return {
+              label: item,
+              value: item,
+            };
+          }),
+          showOther: item.questionType !== "text",
+        };
+      });
+      setQuestionConfig(data);
+    }
+    console.log("*** res", res);
+  };
+
+  useEffect(() => {
+    getQuestion();
+  }, []);
 
   const renderHeader = () => {
     return (
@@ -27,25 +68,6 @@ const Question = () => {
       </>
     );
   };
-
-  const questionConfig = [
-    {
-      title:
-        "1、 在建筑建材行业中，您最希望 AI+SAAS 产品应用于哪些场景 (可多选)",
-      type: "checkbox",
-      multiple: true,
-      options: [
-        { value: "设计阶段", label: "设计阶段" },
-        { value: "施工阶段", label: "施工阶段" },
-        { value: "采购阶段", label: "采购阶段" },
-      ],
-      showOther: true,
-    },
-    {
-      title: "2、 您认为 AI+SAAS 产品在建筑建材行业的主要价值是什么？",
-      type: "textarea",
-    },
-  ];
 
   return (
     <div className="px-[13.5%] pb-[80px]">
@@ -76,6 +98,13 @@ const Question = () => {
                       );
                     })}
                   </Checkbox.Group>
+                  <Form.Item
+                    name=""
+                    layout="vertical"
+                    style={{ paddingTop: "20px" }}
+                  >
+                    <Input.TextArea />
+                  </Form.Item>
                 </Form.Item>
               );
             } else if (item.type === "textarea") {
@@ -86,6 +115,19 @@ const Question = () => {
               );
             }
           })}
+          <Form.Item
+            layout="horizontal"
+            style={{ display: "flex", gap: "20px", justifyContent: "flex-end" }}
+          >
+            <Button className="w-[146px]">取消</Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="ml-[30px] w-[146px]"
+            >
+              提交
+            </Button>
+          </Form.Item>
         </Form>
       </div>
     </div>
