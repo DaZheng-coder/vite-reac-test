@@ -384,3 +384,77 @@ export interface SurveyQuestion {
   sortOrder?: number;
   updateTime?: string;
 }
+
+/**
+ * com.self.company.entity.AiTool
+ *
+ * AiTool
+ */
+export interface AiTool {
+  /**
+   * 所属分类信息（非数据库字段）
+   */
+  category?: AiToolCategory;
+  categoryId?: number;
+  createTime?: string;
+  /**
+   * 工具简介
+   */
+  description?: string;
+  id?: number;
+  /**
+   * 工具LOGO文件ID，关联到files表的id字段
+   */
+  logoFileId?: number;
+  /**
+   * LOGO文件名（非数据库字段）
+   */
+  logoFileName?: string;
+  /**
+   * LOGO额外元数据（非数据库字段）
+   */
+  logoMeta?: string;
+  /**
+   * LOGO访问URL（非数据库字段）
+   */
+  logoUrl?: string;
+  name?: string;
+  /**
+   * 跳转链接地址
+   */
+  redirectUrl?: string;
+  sortOrder?: number;
+  status?: number;
+  updateTime?: string;
+}
+
+/**
+* 所属分类信息（非数据库字段）
+*
+* AiToolCategory
+*/
+export interface AiToolCategory {
+  createTime?: string;
+  id?: number;
+  /**
+   * 分类LOGO文件ID，关联到files表的id字段
+   */
+  logoFileId?: number;
+  /**
+   * LOGO文件名（非数据库字段）
+   */
+  logoFileName?: string;
+  /**
+   * LOGO额外元数据（非数据库字段）
+   */
+  logoMeta?: string;
+  /**
+   * LOGO访问URL（非数据库字段）
+   */
+  logoUrl?: string;
+  name?: string;
+  sortOrder?: number;
+  status?: number;
+  updateTime?: string;
+}
+

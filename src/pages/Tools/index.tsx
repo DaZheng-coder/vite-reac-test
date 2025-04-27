@@ -1,39 +1,51 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Header from "../Home/Header";
 import Aihead from "@assets/aihead.png";
 import { Typography } from "antd";
+import request from "@/api/request";
+import { AiTool, AiToolCategory } from "@/types";
 
 const { Link } = Typography;
 
+interface IToolItem {
+  icon: string;
+  title: string;
+  list: { icon: string; title: string; url: string; desc: string }[];
+}
+
 const Tools = () => {
-  const data = [
-    {
-      icon: Aihead,
-      title: "通用AI达模型",
-      list: [
-        {
-          title: "ChatGPT",
-          url: "https://chat.openai.com/",
-          desc: "ChatGPT是一个由OpenAI开发的对话式人工智能模型，基于GPT-3.5架构，能够理解和生成自然语言。",
-        },
-        {
-          title: "Bing AI",
-          url: "https://www.bing.com/",
-          desc: "Bing AI是微软公司推出的智能搜索引擎，提供自然语言搜索和对话式搜索功能。",
-        },
-        {
-          title: "Claude AI",
-          url: "https://claude.ai/",
-          desc: "Claude AI是Anthropic公司开发的对话式人工智能助手，旨在提供安全和有用的对话体验。",
-        },
-        {
-          title: "Google Bard",
-          url: "https://bard.google.com/",
-          desc: "Google Bard是谷歌推出的对话式人工智能助手，能够回答问题、提供建议和进行对话。",
-        },
-      ],
-    },
-  ];
+  const [data, setData] = useState<IToolItem[]>([]);
+
+  const getList = async () => {
+    const cateRes = await request.get("api/ai/tool/category/list");
+    const castData = cateRes.data?.data as AiToolCategory[];
+    const toolsRes = await request.get("api/ai/tool/list");
+    const toolsData = toolsRes.data?.data as AiTool[];
+    if (castData && toolsData) {
+      const newData = castData.map((item) => {
+        return {
+          icon: item.logoUrl || "",
+          title: item.name || "",
+          list: toolsData
+            .filter((tool) => tool.categoryId === item.id)
+            .map((tool) => {
+              return {
+                icon: tool.logoUrl || "",
+                title: tool.name || "",
+                url: tool.redirectUrl || "",
+                desc: tool.description || "",
+              };
+            }),
+        } as IToolItem;
+      });
+      console.log("*** newData", newData);
+      setData(newData);
+    }
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const renderTitle = (icon: ReactNode, title: string) => {
     return (
@@ -47,16 +59,16 @@ const Tools = () => {
   };
 
   return (
-    <div className="bg-[#FBFCFE]">
-      <div className="flex pb-[64px]">
+    <div className="bg-[#FBFCFE] px-[13.5%]">
+      <div className="flex pb-[64px] flex-wrap">
         {data.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               {renderTitle(item.icon, item.title)}
-              <div className="flex gap-[24px]">
+              <div className="flex gap-[24px] flex-wrap">
                 {item.list.map((item) => (
                   <AICard
-                    icon={item.url}
+                    icon={item.icon}
                     title={item.title}
                     desc={item.desc}
                     url={item.url}
@@ -99,7 +111,9 @@ const AICard = ({
           {title}
         </span>
         <span className="truncate text-[12px] text-[#666]">{desc}</span>
-        <Link className="text-[12px]" href={url} target="_blank" />
+        <Link className="text-[12px] text-[#0959F2]" href={url} target="_blank">
+          {url}
+        </Link>
       </div>
     </div>
   );
