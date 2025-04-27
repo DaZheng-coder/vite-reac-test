@@ -7,7 +7,7 @@ const Classes = () => {
       style={{ paddingLeft: "13.5%", paddingRight: "13.5%" }}
       subtitle="培训课程体系"
     >
-      <img className="mt-[24px] mb-[72px]" src={Peixuntixi} alt="" />
+      <img className="pt-[24px] pb-[72px]" src={Peixuntixi} alt="" />
     </Wrap>
   );
 };

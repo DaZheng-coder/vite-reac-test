@@ -1,27 +1,20 @@
+import request from "@/api/request";
 import ImgDesc from "@/components/ImgDesc";
 import Wrap from "@/components/Wrap";
-
-// 生成几个CaseCard的mock数据
-const mockData = [
-  {
-    img: "https://example.com/image1.png",
-    title: "案例标题1",
-    desc: ["描述1", "描述2", "描述3"],
-  },
-  {
-    img: "https://example.com/image2.png",
-    title: "案例标题2",
-    desc: ["描述1", "描述2", "描述3"],
-  },
-  {
-    img: "https://example.com/image3.png",
-    title: "案例标题3",
-    desc: ["描述1", "描述2", "描述3"],
-  },
-];
+import { AiProjectDeliveryCase } from "@/types";
+import { useState } from "react";
 
 const SuccessCases = () => {
-  const data = mockData;
+  const [cases, setCases] = useState<AiProjectDeliveryCase[]>([]);
+  const getCase = async () => {
+    const res = await request.get("api/ai/project/delivery/case/list");
+    setCases(res.data?.data);
+  };
+
+  useState(() => {
+    getCase();
+  }, []);
+
   return (
     <Wrap
       style={{
@@ -31,9 +24,17 @@ const SuccessCases = () => {
       }}
       subtitle="成功案例展示"
     >
-      <div className="mt-[60px] mb-[87px] flex flex-col gap-[102px]">
-        {data.map((item, index) => {
-          return <ImgDesc key={index} reverse={index % 2 === 0} {...item} />;
+      <div className="pt-[60px] pb-[87px] flex flex-col gap-[102px]">
+        {cases.map((item, index) => {
+          return (
+            <ImgDesc
+              key={index}
+              reverse={index % 2 === 0}
+              img={item.imageUrl as string}
+              title={item.title as string}
+              desc={[item.subtitle as string]}
+            />
+          );
         })}
       </div>
     </Wrap>

@@ -17,11 +17,11 @@ const ImgDesc = ({
     <div className={"flex gap-[57px]" + (reverse ? " flex-row-reverse" : "")}>
       <img
         style={{ background: "rgba(138,210,255,0.1)" }}
-        className="flex-1"
+        className="w-[50%]"
         src={img}
         alt=""
       />
-      <div className="flex-1">
+      <div className="w-[50%]">
         <div className="font-medium text-[26px] text-[#0758F1] leading-[36px] text-left normal-case">
           {title}
         </div>

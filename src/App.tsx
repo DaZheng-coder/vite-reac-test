@@ -4,6 +4,7 @@ import Header from "./pages/Home/Header";
 import { Suspense } from "react";
 import RouteView from "./RouteView";
 import { ConfigProvider, Spin } from "antd";
+import AiConsult from "./components/AiConsult";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         }}
       >
         <div className="pt-[46px]">
+          <AiConsult />
           <Nav />
           <Header />
           <RouteView />

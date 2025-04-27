@@ -281,3 +281,91 @@ export interface ContactUsRequest {
   status?: number;
   updateTime?: string;
 }
+
+/**
+ * com.self.company.entity.TrainingCase
+ *
+ * TrainingCase
+ */
+export interface TrainingCase {
+  content?: string;
+  /**
+   * 封面图片ID，关联到files表的id字段
+   */
+  coverFileId?: number;
+  /**
+   * 封面图片文件名（非数据库字段）
+   */
+  coverFileName?: string;
+  /**
+   * 封面图片额外元数据（非数据库字段）
+   */
+  coverMeta?: string;
+  /**
+   * 封面图片访问URL（非数据库字段）
+   */
+  coverUrl?: string;
+  createTime?: string;
+  id?: number;
+  sortOrder?: number;
+  status?: number;
+  title?: string;
+  updateTime?: string;
+}
+
+/**
+ * com.self.company.entity.AiProjectDeliveryCase
+ *
+ * AiProjectDeliveryCase
+ */
+export interface AiProjectDeliveryCase {
+  content?: string;
+  createTime?: string;
+  id?: number;
+  imageFileId?: number;
+  /**
+   * 图片文件名（非数据库字段）
+   */
+  imageFileName?: string;
+  /**
+   * 图片额外元数据（非数据库字段）
+   */
+  imageMeta?: string;
+  /**
+   * 图片访问URL（非数据库字段）
+   */
+  imageUrl?: string;
+  sortOrder?: number;
+  status?: number;
+  subtitle?: string;
+  title?: string;
+  updateTime?: string;
+}
+
+/**
+ * com.self.company.entity.AiSuccessCase
+ *
+ * AiSuccessCase
+ */
+export interface AiSuccessCase {
+  content?: string;
+  createTime?: string;
+  id?: number;
+  imageFileId?: number;
+  /**
+   * 图片文件名（非数据库字段）
+   */
+  imageFileName?: string;
+  /**
+   * 图片额外元数据（非数据库字段）
+   */
+  imageMeta?: string;
+  /**
+   * 图片访问URL（非数据库字段）
+   */
+  imageUrl?: string;
+  sortOrder?: number;
+  status?: number;
+  title?: string;
+  updateTime?: string;
+}

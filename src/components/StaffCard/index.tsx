@@ -27,7 +27,7 @@ const StaffCard = (props: {
             {job}
           </div>
         </div>
-        {desc.map((item, index) => {
+        {(desc || []).map((item, index) => {
           return (
             <div className="flex gap-[9px] items-center" key={index}>
               <img src={RightArrow} alt="" />
