@@ -1,7 +1,7 @@
 import request from "@/api/request";
 import Title from "@/components/Title";
 import { SurveyQuestion } from "@/types";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import { useEffect, useState } from "react";
 
 interface QuestionConfigItem {
@@ -38,7 +38,6 @@ const Question = () => {
       });
       setQuestionConfig(data);
     }
-    console.log("*** res", res);
   };
 
   useEffect(() => {
@@ -69,6 +68,16 @@ const Question = () => {
     );
   };
 
+  const submit = async () => {
+    const data = form.getFieldsValue();
+    const res = await request.post("api/survey/answer/submit", data);
+    if (res.code === 200 && res.data.code === 200) {
+      form.resetFields();
+      message.success("提交成功");
+    }
+    message.error("提交失败");
+  };
+
   return (
     <div className="px-[13.5%] pb-[80px]">
       {renderHeader()}
@@ -77,6 +86,7 @@ const Question = () => {
           layout="vertical"
           form={form}
           className="flex flex-col gap-[30px]"
+          onFinish={submit}
         >
           {questionConfig.map((item, index) => {
             if (item.type === "checkbox") {

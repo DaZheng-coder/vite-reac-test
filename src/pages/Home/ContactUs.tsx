@@ -40,7 +40,6 @@ const ContactUs = () => {
   const submit = async () => {
     // /message/submit
     const data = form.getFieldsValue();
-    console.log("**** data", data);
     const res = await request.post("api/message/submit", data);
     if (res.code === 200 && res.data.code === 200) {
       form.resetFields();
@@ -64,8 +63,8 @@ const ContactUs = () => {
           <Form.Item required name="messageContent">
             <TextArea autoSize={{ minRows: 5 }} placeholder="请输入留言内容" />
           </Form.Item>
-          <Form.Item>
-            <Button htmlType="submit" className="w-[294px]" type="default">
+          <Form.Item className="flex justify-end">
+            <Button htmlType="submit" className="w-[294px]" ghost>
               提交
             </Button>
           </Form.Item>
@@ -91,8 +90,8 @@ const ContactUs = () => {
           return (
             <div className="flex gap-[4px] items-center" key={index}>
               <img src={item.icon} alt="" />
-              <span>{item.label}</span>
-              <span>{item.value}</span>
+              <span className="text-white">{item.label}</span>
+              <span className="text-white">{item.value}</span>
             </div>
           );
         })}

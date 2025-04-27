@@ -38,7 +38,6 @@ const Tools = () => {
             }),
         } as IToolItem;
       });
-      console.log("*** newData", newData);
       setData(newData);
     }
   };

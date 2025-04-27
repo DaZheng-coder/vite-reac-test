@@ -10,7 +10,6 @@ const Staff = () => {
 
   const getStaffs = async () => {
     const res = await request.get("api/team/all");
-    console.log("*** getStaffs res", res.data);
     setStaffs(res.data?.data || []);
   };
 
@@ -22,16 +21,21 @@ const Staff = () => {
     <Wrap
       subtitle="核心团队人员"
       bg={HexintuanduiBg}
-      style={{ paddingLeft: "13.5%", paddingRight: "13.5%" }}
+      style={{
+        paddingLeft: "13.5%",
+        paddingRight: "13.5%",
+        backgroundSize: "cover",
+      }}
     >
-      <div className="pt-[76px] pb-[100px]">
+      <div className="pt-[76px] pb-[100px] grid grid-cols-2 gap-[30px]">
         {staffs.map((item, index) => {
           return (
             <StaffCard
               key={index}
+              title={item.teamName || ""}
               avatar={item.avatarUrl as string}
-              name={item.name as string}
-              position={item.position as string}
+              job={item.position as string}
+              desc={JSON.parse(item.description || "[]") as string[]}
             />
           );
         })}

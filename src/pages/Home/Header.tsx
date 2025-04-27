@@ -1,7 +1,6 @@
 import request from "@/api/request";
 import { CarouselBanner } from "@/types";
 import { Carousel } from "antd";
-import axios from "axios";
 import { memo, useEffect, useState } from "react";
 
 const Header = () => {
@@ -9,7 +8,6 @@ const Header = () => {
 
   const getPic = async () => {
     const res = await request.get("api/carousel/list");
-    console.log("*** res res", res);
     setBanners(res.data?.data);
   };
 

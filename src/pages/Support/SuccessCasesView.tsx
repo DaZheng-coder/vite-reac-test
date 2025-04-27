@@ -33,7 +33,7 @@ const SuccessCasesView = () => {
               reverse={index % 2 === 0}
               img={item.imageUrl || ""}
               title={item.title || ""}
-              desc={[item.content || ""] || []}
+              desc={JSON.parse(item.content || "[]") as string[]}
             />
           );
         })}

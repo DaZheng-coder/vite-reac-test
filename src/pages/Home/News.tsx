@@ -1,19 +1,27 @@
-import { Button, Tabs, TabsProps } from "antd";
-import Search from "antd/es/transfer/search";
-import { useEffect, useMemo, useState } from "react";
+import { Button, Tabs, TabsProps, Input } from "antd";
+import { useEffect, useMemo, useRef, useState } from "react";
 import InfoCard from "./InfoCard";
 import Title from "@/components/Title";
 import { NewsArticle, NewsCategory } from "@/types";
 import request from "@/api/request";
+import ImgScrollLeft from "@assets/scrollLeft.png";
 
 const News = () => {
   const [cate, setCate] = useState<NewsCategory[]>([]);
   const [selectKey, setSelectKey] = useState<string>("");
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+
   const getCate = async () => {
     const res = await request.get("api/news/category/enabled");
-    console.log("*** res", res.data);
     setCate(res.data?.data);
     setSelectKey(String(res.data?.data[0]?.id));
+    getArt(String(res.data?.data[0]?.id));
+  };
+
+  const getArt = async (categoryId: string) => {
+    console.log("getArt categoryId", categoryId);
+    const res = await request.get(`api/news/article/category/${categoryId}`);
+    setArticles(res.data?.data);
   };
 
   useEffect(() => {
@@ -25,10 +33,12 @@ const News = () => {
       return {
         key: String(item.id),
         label: item.name,
-        children: <NewCard id={String(item.id)} />,
+        children: <NewCard articles={articles} />,
       };
     });
-  }, [cate]);
+  }, [cate, articles]);
+
+  const handleSearch = (value: string) => {};
 
   const renderTabBar = () => {
     return (
@@ -41,6 +51,7 @@ const News = () => {
                 type={selectKey === item.key ? "primary" : "default"}
                 onClick={() => {
                   setSelectKey(item.key);
+                  getArt(item.key);
                 }}
               >
                 {item.label}
@@ -49,7 +60,7 @@ const News = () => {
           })}
         </div>
         <div className="w-[378px]">
-          <Search placeholder="请输入" />
+          <Input.Search placeholder="请输入" onSearch={handleSearch} />
         </div>
       </div>
     );
@@ -80,29 +91,45 @@ const News = () => {
 
 export default News;
 
-const NewCard = ({ id }: { id: string }) => {
-  const [articles, setArticles] = useState<NewsArticle[]>([]);
-  const getArt = async (categoryId: string) => {
-    const res = await request.get(`api/news/article/category/${categoryId}`);
-    setArticles(res.data?.data);
+const NewCard = ({ articles }: { articles: NewsArticle[] }) => {
+  const ref = useRef(null);
+  const scrollLeft = () => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -450, behavior: "smooth" });
+    }
+  };
+  const scrollRight = () => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 450, behavior: "smooth" });
+    }
   };
 
-  useEffect(() => {
-    getArt(id);
-  }, [id]);
-
   return (
-    <div className="flex gap-[25px] my-[36px]">
-      {articles.map((item) => (
-        <InfoCard
-          img={item.coverUrl}
-          key={item.id}
-          title={item.title}
-          desc={item.content}
-          // time="2025年02月24日18:31"
-          time={item.createTime}
-        />
-      ))}
+    <div className="relative">
+      <div
+        className="absolute top-[50%] translate-y-[-50%] left-[-60px] z-[99] cursor-pointer"
+        onClick={scrollLeft}
+      >
+        <img className="w-[42px] h-[42px]" src={ImgScrollLeft} alt="" />
+      </div>
+      <div
+        className="absolute top-[50%] translate-y-[-50%] right-[-60px] z-[99] cursor-pointer scale-x-[-1]"
+        onClick={scrollRight}
+      >
+        <img className="w-[42px] h-[42px]" src={ImgScrollLeft} alt="" />
+      </div>
+      <div className="flex gap-[25px] my-[36px] overflow-scroll" ref={ref}>
+        {articles.map((item) => (
+          <InfoCard
+            img={item.coverUrl}
+            key={item.id}
+            title={item.title}
+            desc={item.content}
+            // time="2025年02月24日18:31"
+            time={item.createTime}
+          />
+        ))}
+      </div>
     </div>
   );
 };

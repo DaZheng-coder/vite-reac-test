@@ -1,38 +1,11 @@
 import Title from "@/components/Title";
-import Header from "../Home/Header";
-import {
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import BackArrow from "@assets/backArrow.png";
 import { Breadcrumb } from "antd";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useRouteStore from "@/store/useRouteStore";
-
-// 生成TradeCard的mock数据列表
-const data = [
-  {
-    img: "https://example.com/image1.png",
-    title: "供应商1",
-    desc: "供应商1的描述信息",
-    address: "地址1",
-  },
-  {
-    img: "https://example.com/image2.png",
-    title: "供应商2",
-    desc: "供应商2的描述信息",
-    address: "地址2",
-  },
-  {
-    img: "https://example.com/image3.png",
-    title: "供应商3",
-    desc: "供应商3的描述信息",
-    address: "地址3",
-  },
-];
+import request from "@/api/request";
+import { SupplierPartner } from "@/types";
 
 const Trade = () => {
   return (
@@ -50,6 +23,53 @@ const imgData = [
 
 export default Trade;
 
+export const TradeList = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [data, setData] = useState<SupplierPartner[]>([]);
+
+  const getTradeList = async () => {
+    const res = await request.get("api/supplier/partner/list");
+    if (res.data?.data) {
+      setData(res.data?.data);
+    }
+  };
+
+  useEffect(() => {
+    getTradeList();
+  }, []);
+
+  return (
+    <div className="px-[13.5%]">
+      <div className="my-[48px] flex justify-center">
+        <Title
+          title="合作供应商"
+          subtitle={"Cooperative suppliers".toUpperCase()}
+        />
+      </div>
+      <div className="grid grid-cols-3 gap-[25px]  pb-[110px]">
+        {data.map((item, key) => {
+          return (
+            <TradeCard
+              key={key}
+              img={item.logoUrl || ""}
+              title={item.name || ""}
+              desc={item.description || ""}
+              address={item.address || ""}
+              onClick={() => {
+                // *** todo 补充id
+                const pathname = location.pathname;
+                navigate(`${pathname}/detail`);
+              }}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 export const TradeDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,21 +78,20 @@ export const TradeDetail = () => {
 
   const breadcrumbPaths = useMemo(() => {
     const paths = location.pathname.split("/").filter((path) => path);
-    let res = [];
+    paths.shift(); // 去掉official前缀
     let source = routeConfig;
+    let res = [];
     for (let i = 0; i < paths.length; i++) {
-      const target = source.find(
-        (item) => item.path.replace("/", "") === paths[i].replace("/", "")
+      const target = source.find((item) =>
+        item.path.replace("/", "").includes(paths[i].replace("/", ""))
       );
       if (target) {
-        res.push({
-          title: target.label,
-        });
+        res.push({ title: target.label });
         source = target.children;
       }
     }
     return res;
-  }, [location.pathname]);
+  }, [location.pathname, routeConfig]);
 
   const titleCls = "text-[20px] text-[#1F2329] font-[500] leading-[29px]";
 
@@ -161,34 +180,6 @@ export const TradeDetail = () => {
   );
 };
 
-export const TradeList = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="px-[13.5%]">
-      <div className="my-[48px] flex justify-center">
-        <Title
-          title="合作供应商"
-          subtitle={"Cooperative suppliers".toUpperCase()}
-        />
-      </div>
-      <div className="flex gap-[25px] pb-[110px]">
-        {data.map((item, key) => {
-          return (
-            <TradeCard
-              key={key}
-              {...item}
-              onClick={() => {
-                // *** todo 补充id
-                navigate("/trade/detail");
-              }}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
 const TradeCard = ({
   img,
   title,
@@ -203,11 +194,14 @@ const TradeCard = ({
   onClick?: () => void;
 }) => {
   return (
-    <div
-      onClick={onClick}
-      className="cursor-pointer w-[30%] flex flex-col gap-[12px]"
-    >
-      <img className="w-full" src={img} alt="" />
+    <div onClick={onClick} className="cursor-pointer flex flex-col gap-[12px]">
+      <div className="w-full pb-[62%] relative">
+        <img
+          className="w-full h-full absolute top-0 left-0 right-0  bottom-0"
+          src={img}
+          alt=""
+        />
+      </div>
       <span className="text-[20px] text-[#333] truncate">{title}</span>
       <span className="text-[16px] text-[#666] line-clamp-3">{desc}</span>
       <span className="text-[16px] text-[#999] truncate">

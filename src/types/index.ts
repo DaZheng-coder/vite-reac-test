@@ -458,3 +458,103 @@ export interface AiToolCategory {
   updateTime?: string;
 }
 
+/**
+ * com.self.company.entity.SupplierPartner
+ *
+ * SupplierPartner
+ */
+export interface SupplierPartner {
+  /**
+   * 公司地址
+   */
+  address?: string;
+  /**
+   * 封面图片文件ID
+   */
+  coverFileId?: number;
+  /**
+   * 封面文件名（非数据库字段）
+   */
+  coverFileName?: string;
+  /**
+   * 封面额外元数据（非数据库字段）
+   */
+  coverMeta?: string;
+  /**
+   * 封面访问URL（非数据库字段）
+   */
+  coverUrl?: string;
+  createTime?: string;
+  /**
+   * 公司简介
+   */
+  description?: string;
+  /**
+   * 图片文件ID列表（非数据库字段，用于前端传递）
+   */
+  fileIds?: number[];
+  id?: number;
+  /**
+   * 关联的图片列表（非数据库字段）
+   */
+  images?: SupplierPartnerImage[];
+  /**
+   * 公司LOGO文件ID
+   */
+  logoFileId?: number;
+  /**
+   * LOGO文件名（非数据库字段）
+   */
+  logoFileName?: string;
+  /**
+   * LOGO额外元数据（非数据库字段）
+   */
+  logoMeta?: string;
+  /**
+   * LOGO访问URL（非数据库字段）
+   */
+  logoUrl?: string;
+  /**
+   * 公司名称
+   */
+  name?: string;
+  sortOrder?: number;
+  /**
+   * 合作状态 0-未合作 1-合作中
+   */
+  status?: number;
+  updateTime?: string;
+  /**
+   * 跳转链接URL
+   */
+  url?: string;
+}
+
+/**
+* com.self.company.entity.SupplierPartnerImage
+*
+* SupplierPartnerImage
+*/
+export interface SupplierPartnerImage {
+  createTime?: string;
+  fileId?: number;
+  /**
+   * 图片额外元数据（非数据库字段）
+   */
+  fileMeta?: string;
+  /**
+   * 图片文件名（非数据库字段）
+   */
+  fileName?: string;
+  /**
+   * 图片访问URL（非数据库字段）
+   */
+  fileUrl?: string;
+  id?: number;
+  sortOrder?: number;
+  /**
+   * 合作伙伴ID
+   */
+  supplierId?: number;
+}
+

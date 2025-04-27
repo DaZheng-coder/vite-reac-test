@@ -17,7 +17,7 @@ const ImgDesc = ({
     <div className={"flex gap-[57px]" + (reverse ? " flex-row-reverse" : "")}>
       <img
         style={{ background: "rgba(138,210,255,0.1)" }}
-        className="w-[50%]"
+        className="w-[50%] object-contain"
         src={img}
         alt=""
       />

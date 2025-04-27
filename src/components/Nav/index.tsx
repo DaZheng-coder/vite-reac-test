@@ -26,10 +26,10 @@ const Nav = () => {
 
   useEffect(() => {
     const path = window.location.pathname;
-    const matchedItem = items.find((item) => item.key === path);
+    const matchedItem = items.find((item) => path.includes(item.key));
     if (matchedItem) {
       setCurrent(matchedItem.key);
-      navigate(matchedItem.key);
+      navigate(path);
     } else {
       setCurrent(items[0]?.key);
       navigate(items[0]?.key);
@@ -37,13 +37,12 @@ const Nav = () => {
   }, [items, navigate]);
 
   return (
-    <div className="fixed w-full top-0 z-50 flex justify-around">
+    <div className="fixed w-full top-0 z-50 flex justify-between px-[13.5%] bg-white">
       <div>
         <img src={Logo} alt="logo" className="w-[337px] h-[46px]" />
       </div>
       <Menu
         style={{
-          background: "transparent",
           border: "none",
           flex: 1,
         }}

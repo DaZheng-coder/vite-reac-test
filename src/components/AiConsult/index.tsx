@@ -11,7 +11,6 @@ const AiConsult = () => {
 
   const handleSubmit = async () => {
     const data = form.getFieldsValue();
-    console.log("**** data", data);
     // /message/submit
     try {
       const res = await request.post("api/web/consultation/add", data);
@@ -75,7 +74,6 @@ const AiConsult = () => {
             form={form}
             layout="horizontal"
             onFinish={() => {
-              console.log("**** form", form.getFieldsValue());
               setVisible(false);
             }}
             size="large"
