@@ -96,6 +96,7 @@ const Question = () => {
     if (res.status === 200 && res.data?.code === 200) {
       form.resetFields();
       messageApi.success("提交成功");
+      return;
     }
     messageApi.error("提交失败");
   };
