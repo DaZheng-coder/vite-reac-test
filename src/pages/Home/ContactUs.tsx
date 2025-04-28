@@ -69,7 +69,7 @@ const ContactUs = () => {
           </Form.Item>
           <Form.Item
             required
-            name="name"
+            name="phone"
             style={{
               display: "inline-block",
               width: "40%",
