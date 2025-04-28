@@ -1,11 +1,13 @@
 const Title = ({
   title,
   subtitle,
+  mainColor = "#333",
   color = "#1F2329",
   className = "",
 }: {
   title: string;
   subtitle: string;
+  mainColor?: string;
   color?: string;
   className?: string;
 }) => {
@@ -19,8 +21,9 @@ const Title = ({
             left: "0",
             zIndex: 1,
             transform: "translateX(-50%)",
+            color: mainColor,
           }}
-          className={`text-nowrap font-medium text-[32px] text-[${color}] leading-[55px]`}
+          className={`text-nowrap font-medium text-[32px] leading-[55px]`}
         >
           {title}
         </span>

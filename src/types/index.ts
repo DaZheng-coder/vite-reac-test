@@ -558,3 +558,27 @@ export interface SupplierPartnerImage {
   supplierId?: number;
 }
 
+/**
+ * com.self.company.entity.CompanyScaleOption
+ *
+ * CompanyScaleOption
+ */
+export interface CompanyScaleOption {
+  id?: number;
+  label?: string;
+  sortOrder?: number;
+  status?: number;
+}
+
+/**
+ * com.self.company.entity.ConsultationNeedOption
+ *
+ * ConsultationNeedOption
+ */
+export interface ConsultationNeedOption {
+  id?: number;
+  label?: string;
+  sortOrder?: number;
+  status?: number;
+  [property: string]: any;
+}

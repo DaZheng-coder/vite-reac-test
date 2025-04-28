@@ -14,6 +14,7 @@ interface QuestionConfigItem {
 
 const Question = () => {
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [questionConfig, setQuestionConfig] = useState<QuestionConfigItem[]>(
     []
@@ -36,6 +37,7 @@ const Question = () => {
           showOther: item.questionType !== "text",
         };
       });
+      console.log("questionConfig", data);
       setQuestionConfig(data);
     }
   };
@@ -70,16 +72,37 @@ const Question = () => {
 
   const submit = async () => {
     const data = form.getFieldsValue();
-    const res = await request.post("api/survey/answer/submit", data);
-    if (res.code === 200 && res.data.code === 200) {
-      form.resetFields();
-      message.success("提交成功");
+    const finalData = [];
+    for (const question of questionConfig) {
+      const curRes = [question.title];
+      if (question.type === "checkbox") {
+        const normal = data[question.title + "normal"];
+        const other = data[question.title + "other"];
+        for (const ans of normal || []) {
+          if (!ans.includes("其他")) {
+            curRes.push(ans);
+          } else {
+            curRes.push(other || "");
+          }
+        }
+      } else if (question.type === "textarea") {
+        curRes.push(data[question.title]);
+      }
+      finalData.push(curRes);
     }
-    message.error("提交失败");
+    const res = await request.post("api/survey/answer/submit", {
+      answers: JSON.stringify(finalData),
+    });
+    if (res.status === 200 && res.data?.code === 200) {
+      form.resetFields();
+      messageApi.success("提交成功");
+    }
+    messageApi.error("提交失败");
   };
 
   return (
     <div className="px-[13.5%] pb-[80px]">
+      {contextHolder}
       {renderHeader()}
       <div className="text-[#666] py-[30px] px-[34px] bg-white shadow-[0px_6px_14px_0px_rgba(29,45,63,0.04)] rounded-[6px]">
         <Form
@@ -88,38 +111,51 @@ const Question = () => {
           className="flex flex-col gap-[30px]"
           onFinish={submit}
         >
-          {questionConfig.map((item, index) => {
+          {questionConfig.map((item) => {
             if (item.type === "checkbox") {
               return (
-                <Form.Item name="" label={item.title} layout="vertical">
-                  <Checkbox.Group
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "20px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    {item.options?.map((option, index) => {
-                      return (
-                        <Checkbox value={option.value} key={index}>
-                          {option.label}
-                        </Checkbox>
-                      );
-                    })}
-                  </Checkbox.Group>
+                <>
                   <Form.Item
-                    name=""
+                    key={item.title + "normal"}
+                    label={item.title}
+                    name={item.title + "normal"}
                     layout="vertical"
-                    style={{ paddingTop: "20px" }}
+                  >
+                    <Checkbox.Group
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "20px",
+                        marginTop: "20px",
+                      }}
+                    >
+                      {item.options?.map((option, index) => {
+                        return (
+                          <Checkbox value={option.value} key={index}>
+                            {option.label}
+                          </Checkbox>
+                        );
+                      })}
+                    </Checkbox.Group>
+                  </Form.Item>
+                  <Form.Item
+                    key={item.title + "other"}
+                    name={item.title + "other"}
+                    layout="vertical"
+                    style={{ marginTop: "-20px" }}
                   >
                     <Input.TextArea />
                   </Form.Item>
-                </Form.Item>
+                </>
               );
             } else if (item.type === "textarea") {
               return (
-                <Form.Item name="" label={item.title} layout="vertical">
+                <Form.Item
+                  key={item.title}
+                  name={item.title}
+                  label={item.title}
+                  layout="vertical"
+                >
                   <Input.TextArea />
                 </Form.Item>
               );

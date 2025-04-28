@@ -1,8 +1,9 @@
+import { create } from 'zustand';
 // export const getNavList
 
-import { Axios } from "axios";
+import axios from "axios";
 
-const request = new  Axios({
+const request = axios.create({
   baseURL: "https://www.jiancailvtan.com/",
   timeout: 10000,
   headers: {
@@ -10,10 +11,6 @@ const request = new  Axios({
   },
 });
 
-request.interceptors.response.use(
-  (config) => {
-    config.data = JSON.parse(config.data) || {};
-    return config;
-  })
+export default request;
 
-export default request
+

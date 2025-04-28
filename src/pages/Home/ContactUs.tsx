@@ -6,7 +6,7 @@ import Avatar from "@assets/avatar.png";
 import Phone from "@assets/phone.png";
 import Email from "@assets/email.png";
 import Position from "@assets/position.png";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import WxQrCode from "@/components/WxQrCode";
 import request from "@/api/request";
@@ -36,26 +36,52 @@ const contactData = [
 
 const ContactUs = () => {
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const submit = async () => {
-    // /message/submit
     const data = form.getFieldsValue();
-    const res = await request.post("api/message/submit", data);
-    if (res.code === 200 && res.data.code === 200) {
+    const res = await request.post("api/web/message/submit", data);
+    if (res.status === 200 && res.data?.code === 200) {
       form.resetFields();
-      alert("留言成功");
+      messageApi.success("留言成功");
     }
+    messageApi.error("留言失败");
   };
 
   const renderForm = () => {
     return (
       <div
         style={{ border: "1px solid #5EBCFF" }}
-        className="w-[698px] mt-[30px]  rounded-[4px] p-[48px] bg-[rgba(22,124,248,0.5)]"
+        className="flex-1 mt-[30px]  rounded-[4px] p-[48px] bg-[rgba(22,124,248,0.5)]"
       >
+        {contextHolder}
         <Form form={form} onFinish={submit}>
-          <Form.Item required name="name">
+          <Form.Item
+            required
+            name="name"
+            style={{
+              display: "inline-block",
+              width: "40%",
+              marginRight: "20%",
+            }}
+          >
             <Input type="text" placeholder="请输入姓名" />
+          </Form.Item>
+          <Form.Item
+            required
+            name="name"
+            style={{
+              display: "inline-block",
+              width: "40%",
+            }}
+            rules={[
+              {
+                pattern: /^1[3-9]\d{9}$/,
+                message: "请输入有效的手机号",
+              },
+            ]}
+          >
+            <Input type="text" placeholder="请输入电话" />
           </Form.Item>
           <Form.Item required name="company">
             <Input type="text" placeholder="请输入公司名称" />
@@ -105,16 +131,21 @@ const ContactUs = () => {
         background: `url(${ContactUsBg}) no-repeat center`,
         backgroundSize: "cover",
       }}
-      className="w-full flex flex-col  items-center py-[38px]"
+      className="w-full px-[13.5%] py-[38px]"
     >
-      <Title title="联系我们" subtitle="ORIENTATION" color="white" />
-      <div className="flex mt-[30px]">
-        <div className="pr-[97px]">
+      <Title
+        title="联系我们"
+        subtitle={"Contact Us".toUpperCase()}
+        mainColor="#fff"
+        color="white"
+      />
+      <div className="flex mt-[30px] gap-[3%]">
+        <div className="flex-1">
           {renderSubTitle("联系方式")}
           {renderContactInfo()}
           <WxQrCode />
         </div>
-        <div>
+        <div className="flex-1">
           {renderSubTitle("我要留言")}
           {renderForm()}
         </div>
